@@ -227,3 +227,6 @@ C:\Users\HAMID\Desktop\StationaryHub\obj\Debug\net10.0\compressed\jv9gnz1zin-{0}
 C:\Users\HAMID\Desktop\StationaryHub\obj\Debug\net10.0\compressed\zxjtyo5azg-{0}-yn20aaz5ho-yn20aaz5ho.gz
 C:\Users\HAMID\Desktop\StationaryHub\obj\Debug\net10.0\compressed\mudtpsv58a-{0}-kggh23t7bh-kggh23t7bh.gz
 C:\Users\HAMID\Desktop\StationaryHub\obj\Debug\net10.0\compressed\aqet6ipve8-{0}-ljd63r76ho-ljd63r76ho.gz
+C:\Users\HAMID\Desktop\StationaryHub\bin\Debug\net10.0\Npgsql.dll
+C:\Users\HAMID\Desktop\StationaryHub\bin\Debug\net10.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
+C:\Users\HAMID\Desktop\StationaryHub\obj\Debug\net10.0\StationaryHub.sourcelink.json

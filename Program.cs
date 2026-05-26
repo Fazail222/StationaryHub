@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.HttpOverrides;
 using StationaryHub.Data;
 using StationaryHub.Models;
 using StationaryHub.Services;
@@ -8,9 +9,25 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+    options.KnownIPNetworks.Clear();
+    options.KnownProxies.Clear();
+});
+
+var renderDatabaseUrl = builder.Configuration["DATABASE_URL"];
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(
-        builder.Configuration.GetConnectionString("DefaultConnection")));
+{
+    if (!string.IsNullOrWhiteSpace(renderDatabaseUrl))
+    {
+        options.UseNpgsql(ToPostgresConnectionString(renderDatabaseUrl));
+    }
+    else
+    {
+        options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    }
+});
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
@@ -40,6 +57,8 @@ builder.Services.AddScoped<IImageStorageService, ImageStorageService>();
 
 var app = builder.Build();
 
+app.UseForwardedHeaders();
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -62,3 +81,14 @@ app.MapControllerRoute(
 await SeedData.InitializeAsync(app.Services);
 
 app.Run();
+
+static string ToPostgresConnectionString(string databaseUrl)
+{
+    var uri = new Uri(databaseUrl);
+    var userInfo = uri.UserInfo.Split(':', 2);
+    var username = Uri.UnescapeDataString(userInfo[0]);
+    var password = userInfo.Length > 1 ? Uri.UnescapeDataString(userInfo[1]) : string.Empty;
+    var database = uri.AbsolutePath.TrimStart('/');
+
+    return $"Host={uri.Host};Port={uri.Port};Database={database};Username={username};Password={password};SSL Mode=Require;Trust Server Certificate=true";
+}

@@ -11,7 +11,7 @@ public static class SeedData
         using var scope = services.CreateScope();
         var provider = scope.ServiceProvider;
         var context = provider.GetRequiredService<AppDbContext>();
-        await context.Database.MigrateAsync();
+        await context.Database.EnsureCreatedAsync();
 
         var roleManager = provider.GetRequiredService<RoleManager<IdentityRole>>();
         var userManager = provider.GetRequiredService<UserManager<ApplicationUser>>();
