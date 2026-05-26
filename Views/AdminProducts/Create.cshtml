@@ -1,0 +1,7 @@
+@model ProductEditViewModel
+@{
+    ViewData["Title"] = "Create Product";
+}
+<h1 class="mb-6 text-4xl font-black">Create product</h1>
+<partial name="_ProductForm" model="Model" />
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

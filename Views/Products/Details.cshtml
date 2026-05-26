@@ -1,0 +1,24 @@
+@model Product
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<div class="grid gap-8 md:grid-cols-2">
+    <img class="w-full rounded-lg border border-white/10 object-cover" src="@Model.ImageUrl" alt="@Model.Name" />
+    <div>
+        <p class="text-sm font-bold uppercase tracking-wider text-white">@Model.Category?.Name</p>
+        <h1 class="mt-3 text-4xl font-black">@Model.Name</h1>
+        <p class="mt-5 text-gray-400">@Model.Description</p>
+        <p class="mt-6 text-3xl font-black">$@Model.Price.ToString("0.00")</p>
+        <p class="mt-2 text-sm text-gray-400">@Model.StockQuantity in stock</p>
+        <form class="mt-8 flex flex-wrap gap-3" asp-controller="Cart" asp-action="Add" method="post">
+            <input type="hidden" name="productId" value="@Model.Id" />
+            <div class="flex rounded-lg border border-white/10 bg-black">
+                <button class="px-4 py-3 font-bold hover:bg-white/10" type="button" data-quantity-decrease>-</button>
+                <input class="w-20 bg-transparent px-3 py-3 text-center font-bold outline-none" type="number" name="quantity" value="1" min="1" max="@Model.StockQuantity" data-quantity-input />
+                <button class="px-4 py-3 font-bold hover:bg-white/10" type="button" data-quantity-increase>+</button>
+            </div>
+            <button class="rounded-lg bg-white px-6 py-3 font-bold text-black hover:bg-gray-300" type="submit">Add to cart</button>
+        </form>
+    </div>
+</div>

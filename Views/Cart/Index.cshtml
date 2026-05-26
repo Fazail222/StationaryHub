@@ -1,0 +1,43 @@
+@model CartViewModel
+@{
+    ViewData["Title"] = "Cart";
+}
+<h1 class="mb-6 text-4xl font-black">Shopping cart</h1>
+@if (!Model.Items.Any())
+{
+    <div class="rounded-lg border border-white/10 bg-white/5 p-8 text-gray-400">Your cart is empty.</div>
+}
+else
+{
+    <div class="space-y-4">
+        @foreach (var item in Model.Items)
+        {
+            <div class="grid gap-4 rounded-lg border border-white/10 bg-white/5 p-4 md:grid-cols-[96px_1fr_auto]">
+                <img class="h-24 w-24 rounded object-cover" src="@item.ImageUrl" alt="@item.ProductName" />
+                <div>
+                    <h2 class="font-bold">@item.ProductName</h2>
+                    <p class="text-gray-400">$@item.UnitPrice.ToString("0.00") each</p>
+                    <p class="text-sm text-white">Subtotal $@item.Subtotal.ToString("0.00")</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <form asp-action="Update" method="post" class="flex gap-2">
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <input class="field w-24" type="number" name="quantity" value="@item.Quantity" min="1" max="@item.StockQuantity" />
+                        <button class="rounded bg-white/10 px-3 py-2">Update</button>
+                    </form>
+                    <form asp-action="Remove" method="post">
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <button class="rounded bg-white/10 px-3 py-2 text-white">Remove</button>
+                    </form>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-lg border border-white/10 bg-white/5 p-5">
+        <p class="text-2xl font-black">Total $@Model.Total.ToString("0.00")</p>
+        <div class="flex gap-3">
+            <form asp-action="Clear" method="post"><button class="rounded-lg border border-white/10 px-5 py-3 font-bold">Clear cart</button></form>
+            <a class="rounded-lg bg-white px-5 py-3 font-bold text-black hover:bg-gray-300" asp-controller="Checkout" asp-action="Index">Checkout</a>
+        </div>
+    </div>
+}

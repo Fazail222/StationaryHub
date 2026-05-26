@@ -1,0 +1,33 @@
+@model IEnumerable<Order>
+@{
+    ViewData["Title"] = "All Orders";
+}
+<h1 class="mb-6 text-4xl font-black">Orders</h1>
+<div class="overflow-hidden rounded-lg border border-white/10 bg-white/5">
+    <table class="w-full text-left text-sm">
+        <thead class="bg-white/5 text-gray-400"><tr><th class="p-4">Order</th><th>Customer</th><th>Date</th><th>Status</th><th>Total</th><th></th></tr></thead>
+        <tbody>
+        @foreach (var order in Model)
+        {
+            <tr class="border-t border-white/10">
+                <td class="p-4">#@order.Id</td>
+                <td>@order.User?.Email</td>
+                <td>@order.OrderDate.ToLocalTime().ToString("MMM d, yyyy")</td>
+                <td>@order.Status</td>
+                <td>$@order.TotalAmount.ToString("0.00")</td>
+                <td class="py-3 pr-4">
+                    <div class="flex flex-wrap items-center gap-3">
+                        <a class="text-white" asp-action="Details" asp-route-id="@order.Id">Manage</a>
+                        @if (order.Status == OrderStatus.Delivered)
+                        {
+                            <form asp-action="Delete" asp-route-id="@order.Id" method="post">
+                                <button class="text-gray-300 hover:text-white" type="submit">Delete</button>
+                            </form>
+                        }
+                    </div>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

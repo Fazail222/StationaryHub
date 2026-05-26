@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+@{
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+    var isAdminArea = controller.StartsWith("Admin", StringComparison.OrdinalIgnoreCase);
+    var isAdminUser = User.IsInRole(Roles.Admin);
+}
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - StationeryHub</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/css/output.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/StationaryHub.styles.css" asp-append-version="true" />
+</head>
+<body class="min-h-screen bg-black text-white antialiased">
+    <header class="sticky top-0 z-50 border-b border-white/10 bg-black/90 backdrop-blur">
+        <nav class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+            @if (isAdminUser)
+            {
+                <a class="text-xl font-black tracking-tight text-white" asp-controller="Admin" asp-action="Dashboard">StationeryHub Admin</a>
+            }
+            else
+            {
+                <a class="text-xl font-black tracking-tight text-white" asp-controller="Home" asp-action="Index">StationeryHub</a>
+            }
+            <button class="rounded border border-white/10 px-3 py-2 text-sm md:hidden" type="button" data-menu-toggle>Menu</button>
+            <div class="hidden items-center gap-5 text-sm font-medium text-gray-300 md:flex" data-menu>
+                @if (isAdminUser)
+                {
+                    <a class="rounded-full bg-white px-4 py-2 font-bold text-black hover:bg-gray-300" asp-controller="Admin" asp-action="Dashboard">Dashboard</a>
+                    <form asp-controller="Account" asp-action="Logout" method="post">
+                        <button class="hover:text-white" type="submit">Logout</button>
+                    </form>
+                }
+                else
+                {
+                    <a class="hover:text-white" asp-controller="Home" asp-action="Index">Home</a>
+                    <a class="hover:text-white" asp-controller="Products" asp-action="Index">Products</a>
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <a class="hover:text-white" asp-controller="Cart" asp-action="Index">Cart</a>
+                        <a class="hover:text-white" asp-controller="Orders" asp-action="Index">Orders</a>
+                        <a class="hover:text-white" asp-controller="Account" asp-action="Profile">Profile</a>
+                        <form asp-controller="Account" asp-action="Logout" method="post">
+                            <button class="hover:text-white" type="submit">Logout</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <a class="hover:text-white" asp-controller="Account" asp-action="Login">Login</a>
+                        <a class="rounded-full bg-white px-4 py-2 font-bold text-black hover:bg-gray-300" asp-controller="Account" asp-action="Register">Register</a>
+                    }
+                }
+            </div>
+        </nav>
+    </header>
+    <main class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8" role="main">
+        @if (isAdminUser)
+        {
+            <div class="mb-6 flex justify-end gap-5 text-sm font-medium">
+                <a class="hover:text-gray-300" asp-controller="AdminProducts" asp-action="Index">Products</a>
+                <a class="hover:text-gray-300" asp-controller="AdminOrders" asp-action="Index">Orders</a>
+                <a class="hover:text-gray-300" asp-controller="AdminUsers" asp-action="Index">Users</a>
+            </div>
+        }
+        @if (TempData["Success"] is string message)
+        {
+            <div class="mb-6 rounded-lg border border-white/30 bg-white/10 px-4 py-3 text-white">@message</div>
+        }
+        @RenderBody()
+    </main>
+    <footer class="border-t border-white/10 bg-black">
+        <div class="mx-auto grid max-w-7xl gap-4 px-4 py-10 text-sm text-gray-400 sm:px-6 md:grid-cols-3 lg:px-8">
+            <p class="font-semibold text-white">StationeryHub</p>
+            <p>Premium stationery, sports gear and toys delivered from one polished storefront.</p>
+            <p class="md:text-right">&copy; 2026 StationeryHub</p>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

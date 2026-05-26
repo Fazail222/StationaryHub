@@ -1,0 +1,4 @@
+@import "tailwindcss";
+@source "../../Views/**/*.cshtml";
+@source "../../Controllers/**/*.cs";
+@source "../../ViewModels/**/*.cs";

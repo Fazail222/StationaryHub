@@ -1,0 +1,61 @@
+@model HomeViewModel
+@{
+    ViewData["Title"] = "Home";
+}
+
+<section class="overflow-hidden rounded-lg border border-white/10 bg-white/5">
+    <div class="grid gap-8 p-8 md:grid-cols-2 md:p-12">
+        <div class="flex flex-col justify-center">
+            <p class="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-white">One cart. Three worlds.</p>
+            <h1 class="text-4xl font-black tracking-tight md:text-6xl">Shop Stationery, Sports & Toys</h1>
+            <p class="mt-5 max-w-xl text-lg text-gray-400">Everything you need in one place.</p>
+            <div class="mt-8 flex flex-wrap gap-3">
+                <a class="rounded-full bg-white px-6 py-3 font-bold text-black hover:bg-gray-300" asp-controller="Products" asp-action="Index">Shop Now</a>
+                <a class="rounded-full border border-white/15 px-6 py-3 font-bold text-white hover:border-white hover:text-white" href="#categories">Browse Categories</a>
+            </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+            @foreach (var product in Model.FeaturedProducts.Take(4))
+            {
+                <img class="aspect-square rounded-lg object-cover" src="@product.ImageUrl" alt="@product.Name" />
+            }
+        </div>
+    </div>
+</section>
+
+<section id="categories" class="mt-12">
+    <h2 class="mb-5 text-2xl font-black">Browse categories</h2>
+    <div class="grid gap-4 md:grid-cols-3">
+        @foreach (var category in Model.Categories)
+        {
+            <a class="rounded-lg border border-white/10 bg-white/5 p-6 transition hover:-translate-y-1 hover:border-white/60" asp-controller="Products" asp-action="Index" asp-route-category="@category.Name">
+                <p class="text-sm text-gray-400">Category</p>
+                <h3 class="mt-2 text-2xl font-black text-white">@category.Name</h3>
+                <p class="mt-3 text-gray-400">Explore curated @category.Name.ToLower() essentials.</p>
+            </a>
+        }
+    </div>
+</section>
+
+<section class="mt-12">
+    <div class="mb-5 flex items-center justify-between">
+        <h2 class="text-2xl font-black">Featured products</h2>
+        <a class="text-sm font-bold text-white" asp-controller="Products" asp-action="Index">View all</a>
+    </div>
+    <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        @foreach (var product in Model.FeaturedProducts)
+        {
+            <partial name="_ProductCard" model="product" />
+        }
+    </div>
+</section>
+
+<section class="mt-12">
+    <h2 class="mb-5 text-2xl font-black">New arrivals</h2>
+    <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        @foreach (var product in Model.NewArrivals)
+        {
+            <partial name="_ProductCard" model="product" />
+        }
+    </div>
+</section>

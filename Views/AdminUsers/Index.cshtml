@@ -1,0 +1,25 @@
+@model IEnumerable<ApplicationUser>
+@{
+    ViewData["Title"] = "Users";
+}
+<h1 class="mb-6 text-4xl font-black">Users</h1>
+<div class="overflow-hidden rounded-lg border border-white/10 bg-white/5">
+    <table class="w-full text-left text-sm">
+        <thead class="bg-white/5 text-gray-400"><tr><th class="p-4">Name</th><th>Email</th><th>Phone</th><th></th></tr></thead>
+        <tbody>
+        @foreach (var user in Model)
+        {
+            <tr class="border-t border-white/10">
+                <td class="p-4">@user.FullName</td>
+                <td>@user.Email</td>
+                <td>@user.PhoneNumber</td>
+                <td class="py-3 pr-4">
+                    <form asp-action="Delete" asp-route-id="@user.Id" method="post">
+                        <button class="text-gray-300 hover:text-white" type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

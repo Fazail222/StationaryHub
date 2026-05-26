@@ -1,0 +1,22 @@
+@model Order
+@{
+    ViewData["Title"] = $"Order #{Model.Id}";
+}
+<div class="mb-6 rounded-lg border border-white/10 bg-white/5 p-6">
+    <h1 class="text-3xl font-black">Order #@Model.Id</h1>
+    <p class="mt-2 text-gray-400">@Model.ShippingAddress</p>
+    <p class="mt-2 text-white">@Model.Status</p>
+</div>
+<div class="space-y-3">
+    @foreach (var item in Model.OrderItems)
+    {
+        <div class="flex items-center justify-between rounded-lg border border-white/10 bg-white/5 p-4">
+            <div>
+                <h2 class="font-bold">@item.Product?.Name</h2>
+                <p class="text-sm text-gray-400">@item.Quantity x $@item.UnitPrice.ToString("0.00")</p>
+            </div>
+            <p class="font-black">$@((item.Quantity * item.UnitPrice).ToString("0.00"))</p>
+        </div>
+    }
+</div>
+<p class="mt-6 text-right text-2xl font-black">Total $@Model.TotalAmount.ToString("0.00")</p>

@@ -1,0 +1,13 @@
+@model ProductEditViewModel
+<form class="grid gap-4 rounded-lg border border-white/10 bg-white/5 p-6 md:grid-cols-2" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Id" />
+    <div asp-validation-summary="ModelOnly" class="md:col-span-2 text-sm text-gray-300"></div>
+    <input class="field md:col-span-2" asp-for="Name" placeholder="Name" />
+    <textarea class="field md:col-span-2" asp-for="Description" rows="5" placeholder="Description"></textarea>
+    <input class="field" asp-for="Price" placeholder="Price" />
+    <input class="field" asp-for="StockQuantity" placeholder="Stock quantity" />
+    <select class="field" asp-for="CategoryId" asp-items="Model.Categories"></select>
+    <input class="field" asp-for="ImageUrl" placeholder="Image URL" />
+    <input class="field md:col-span-2" asp-for="ImageFile" type="file" accept=".jpg,.jpeg,.png,.webp,.gif" />
+    <button class="rounded-lg bg-white px-5 py-3 font-bold text-black md:col-span-2">Save product</button>
+</form>

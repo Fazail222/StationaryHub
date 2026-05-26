@@ -1,0 +1,22 @@
+@model RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+}
+<div class="mx-auto max-w-md rounded-lg border border-white/10 bg-white/5 p-6">
+    <h1 class="text-3xl font-black">Create account</h1>
+    <form class="mt-6 space-y-4" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-sm text-gray-300"></div>
+        <input class="field" asp-for="FullName" placeholder="Full name" />
+        <span asp-validation-for="FullName" class="text-sm text-gray-300"></span>
+        <input class="field" asp-for="Email" placeholder="Email" />
+        <span asp-validation-for="Email" class="text-sm text-gray-300"></span>
+        <input class="field" asp-for="PhoneNumber" placeholder="Phone" />
+        <span asp-validation-for="PhoneNumber" class="text-sm text-gray-300"></span>
+        <input class="field" asp-for="Password" placeholder="Password" />
+        <span asp-validation-for="Password" class="text-sm text-gray-300"></span>
+        <input class="field" asp-for="ConfirmPassword" placeholder="Confirm password" />
+        <span asp-validation-for="ConfirmPassword" class="text-sm text-gray-300"></span>
+        <button class="w-full rounded-lg bg-white py-3 font-bold text-black hover:bg-gray-300">Register</button>
+    </form>
+</div>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

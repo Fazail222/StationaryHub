@@ -1,0 +1,17 @@
+@model CheckoutViewModel
+@{
+    ViewData["Title"] = "Checkout";
+}
+<div class="mx-auto max-w-2xl rounded-lg border border-white/10 bg-white/5 p-6">
+    <h1 class="text-3xl font-black">Checkout</h1>
+    <form class="mt-6 grid gap-4 md:grid-cols-2" method="post">
+        <div asp-validation-summary="ModelOnly" class="md:col-span-2 text-sm text-gray-300"></div>
+        <input class="field md:col-span-2" asp-for="FullName" placeholder="Full name" />
+        <input class="field" asp-for="Phone" placeholder="Phone" />
+        <input class="field" asp-for="PostalCode" placeholder="Postal code" />
+        <input class="field md:col-span-2" asp-for="Address" placeholder="Address" />
+        <input class="field md:col-span-2" asp-for="City" placeholder="City" />
+        <button class="rounded-lg bg-white px-5 py-3 font-bold text-black hover:bg-gray-300 md:col-span-2">Place order</button>
+    </form>
+</div>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

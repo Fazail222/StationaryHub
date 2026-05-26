@@ -1,0 +1,29 @@
+@model Order
+@{
+    ViewData["Title"] = $"Manage Order #{Model.Id}";
+}
+<div class="mb-6 rounded-lg border border-white/10 bg-white/5 p-6">
+    <h1 class="text-3xl font-black">Order #@Model.Id</h1>
+    <p class="mt-2 text-gray-400">@Model.User?.Email</p>
+    <p class="mt-2 text-gray-400">@Model.ShippingAddress</p>
+    <form class="mt-4 flex flex-wrap gap-3" asp-action="UpdateStatus" method="post">
+        <input type="hidden" name="id" value="@Model.Id" />
+        <select class="field max-w-xs" name="status" asp-items="Html.GetEnumSelectList<OrderStatus>()"></select>
+        <button class="rounded-lg bg-white px-5 py-3 font-bold text-black">Update status</button>
+    </form>
+    @if (Model.Status == OrderStatus.Delivered)
+    {
+        <form class="mt-4" asp-action="Delete" asp-route-id="@Model.Id" method="post">
+            <button class="rounded-lg border border-white/20 px-5 py-3 font-bold text-white hover:bg-white/10" type="submit">Delete delivered order</button>
+        </form>
+    }
+</div>
+<div class="space-y-3">
+    @foreach (var item in Model.OrderItems)
+    {
+        <div class="flex justify-between rounded-lg border border-white/10 bg-white/5 p-4">
+            <span>@item.Product?.Name x @item.Quantity</span>
+            <span>$@((item.Quantity * item.UnitPrice).ToString("0.00"))</span>
+        </div>
+    }
+</div>

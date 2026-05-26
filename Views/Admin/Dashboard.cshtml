@@ -1,0 +1,35 @@
+@model AdminDashboardViewModel
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+<div class="mb-6 flex flex-wrap items-center justify-between gap-4">
+    <h1 class="text-4xl font-black">Admin dashboard</h1>
+</div>
+<div class="grid gap-4 md:grid-cols-4">
+    <div class="rounded-lg border border-white/10 bg-white/5 p-5"><p class="text-gray-400">Users</p><p class="text-3xl font-black">@Model.TotalUsers</p></div>
+    <div class="rounded-lg border border-white/10 bg-white/5 p-5"><p class="text-gray-400">Orders</p><p class="text-3xl font-black">@Model.TotalOrders</p></div>
+    <div class="rounded-lg border border-white/10 bg-white/5 p-5"><p class="text-gray-400">Products</p><p class="text-3xl font-black">@Model.TotalProducts</p></div>
+    <div class="rounded-lg border border-white/10 bg-white/5 p-5"><p class="text-gray-400">Revenue</p><p class="text-3xl font-black">$@Model.TotalRevenue.ToString("0.00")</p></div>
+</div>
+<div class="mt-8 grid gap-6 lg:grid-cols-2">
+    <div class="rounded-lg border border-white/10 bg-white/5 p-5">
+        <h2 class="mb-4 text-xl font-bold">Revenue by status</h2>
+        @foreach (var item in Model.RevenueByStatus)
+        {
+            var width = Model.TotalRevenue > 0 ? Math.Min(100, (int)(item.Value / Model.TotalRevenue * 100)) : 0;
+            <div class="mb-3">
+                <div class="flex justify-between text-sm"><span>@item.Key</span><span>$@item.Value.ToString("0.00")</span></div>
+                <div class="mt-1 h-2 rounded bg-white/10"><div class="h-2 rounded bg-white" style="width:@width%"></div></div>
+            </div>
+        }
+    </div>
+    <div class="rounded-lg border border-white/10 bg-white/5 p-5">
+        <h2 class="mb-4 text-xl font-bold">Recent orders</h2>
+        @foreach (var order in Model.RecentOrders)
+        {
+            <a class="flex justify-between border-t border-white/10 py-3 text-sm hover:text-white" asp-controller="AdminOrders" asp-action="Details" asp-route-id="@order.Id">
+                <span>#@order.Id @order.User?.Email</span><span>$@order.TotalAmount.ToString("0.00")</span>
+            </a>
+        }
+    </div>
+</div>

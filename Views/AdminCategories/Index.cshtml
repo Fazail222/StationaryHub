@@ -1,0 +1,18 @@
+@model IEnumerable<Category>
+@{
+    ViewData["Title"] = "Categories";
+}
+<h1 class="mb-6 text-4xl font-black">Categories</h1>
+<form class="mb-6 flex gap-3 rounded-lg border border-white/10 bg-white/5 p-4" asp-action="Create" method="post">
+    <input class="field" name="Name" placeholder="New category name" required maxlength="80" />
+    <button class="rounded-lg bg-white px-5 py-3 font-bold text-black">Add</button>
+</form>
+<div class="grid gap-4 md:grid-cols-3">
+    @foreach (var category in Model)
+    {
+        <div class="rounded-lg border border-white/10 bg-white/5 p-5">
+            <h2 class="text-xl font-bold">@category.Name</h2>
+            <p class="mt-2 text-gray-400">@category.Products.Count products</p>
+        </div>
+    }
+</div>

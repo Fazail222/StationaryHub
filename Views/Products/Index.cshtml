@@ -1,0 +1,52 @@
+@model ProductListViewModel
+@{
+    ViewData["Title"] = "Products";
+}
+
+<div class="mb-8">
+    <h1 class="text-4xl font-black">Product catalog</h1>
+    <p class="mt-2 text-gray-400">Search, filter and sort the complete StationeryHub collection.</p>
+</div>
+
+<form class="mb-8 grid gap-3 rounded-lg border border-white/10 bg-white/5 p-4 md:grid-cols-4" method="get">
+    <input class="field" name="search" value="@Model.Search" placeholder="Search products" />
+    <select class="field" name="categoryId" asp-items="Model.Categories">
+        <option value="">All categories</option>
+    </select>
+    <select class="field" name="sort">
+        <option value="price_asc" selected="@(Model.Sort is null || Model.Sort == "price_asc")">Price low to high</option>
+        <option value="price_desc" selected="@(Model.Sort == "price_desc")">Price high to low</option>
+        <option value="newest" selected="@(Model.Sort == "newest")">Newest</option>
+    </select>
+    <button class="rounded-lg bg-white px-5 py-3 font-bold text-black hover:bg-gray-300" type="submit">Search</button>
+</form>
+
+<div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    @foreach (var item in Model.Products)
+    {
+        <article class="overflow-hidden rounded-lg border border-white/10 bg-white/5 transition hover:-translate-y-1 hover:border-white/60">
+            <a asp-action="Details" asp-route-id="@item.Id"><img class="aspect-[4/3] w-full object-cover" src="@item.ImageUrl" alt="@item.Name" /></a>
+            <div class="p-5">
+                <p class="text-xs font-bold uppercase tracking-wider text-white">@item.CategoryName</p>
+                <h3 class="mt-2 text-lg font-bold">
+                    <a class="hover:text-gray-300" asp-action="Details" asp-route-id="@item.Id">@item.Name</a>
+                </h3>
+                <p class="mt-2 line-clamp-2 text-sm text-gray-400">@item.Description</p>
+                <div class="mt-4 flex items-center justify-between">
+                    <span class="text-xl font-black">$@item.Price.ToString("0.00")</span>
+                    <form asp-controller="Cart" asp-action="Add" method="post">
+                        <input type="hidden" name="productId" value="@item.Id" />
+                        <button class="rounded-full bg-white px-4 py-2 text-sm font-bold text-black hover:bg-gray-300">Add</button>
+                    </form>
+                </div>
+            </div>
+        </article>
+    }
+</div>
+
+<div class="mt-8 flex items-center justify-center gap-3">
+    @for (var i = 1; i <= Model.TotalPages; i++)
+    {
+        <a class="rounded px-4 py-2 @(i == Model.Page ? "bg-white text-black" : "bg-white/5 text-gray-300")" asp-route-page="@i" asp-route-search="@Model.Search" asp-route-categoryId="@Model.CategoryId" asp-route-sort="@Model.Sort">@i</a>
+    }
+</div>

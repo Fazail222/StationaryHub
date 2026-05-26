@@ -1,0 +1,21 @@
+@model Product
+
+<article class="overflow-hidden rounded-lg border border-white/10 bg-white/5 transition hover:-translate-y-1 hover:border-white/60">
+    <a asp-controller="Products" asp-action="Details" asp-route-id="@Model.Id">
+        <img class="aspect-[4/3] w-full object-cover" src="@Model.ImageUrl" alt="@Model.Name" />
+    </a>
+    <div class="p-5">
+        <p class="text-xs font-bold uppercase tracking-wider text-white">@Model.Category?.Name</p>
+        <h3 class="mt-2 text-lg font-bold">
+            <a class="hover:text-gray-300" asp-controller="Products" asp-action="Details" asp-route-id="@Model.Id">@Model.Name</a>
+        </h3>
+        <p class="mt-2 line-clamp-2 text-sm text-gray-400">@Model.Description</p>
+        <div class="mt-4 flex items-center justify-between">
+            <span class="text-xl font-black">$@Model.Price.ToString("0.00")</span>
+            <form asp-controller="Cart" asp-action="Add" method="post">
+                <input type="hidden" name="productId" value="@Model.Id" />
+                <button class="rounded-full bg-white px-4 py-2 text-sm font-bold text-black hover:bg-gray-300" type="submit">Add</button>
+            </form>
+        </div>
+    </div>
+</article>
