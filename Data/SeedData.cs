@@ -11,7 +11,6 @@ public static class SeedData
         using var scope = services.CreateScope();
         var provider = scope.ServiceProvider;
         var context = provider.GetRequiredService<AppDbContext>();
-        await context.Database.EnsureCreatedAsync();
 
         var roleManager = provider.GetRequiredService<RoleManager<IdentityRole>>();
         var userManager = provider.GetRequiredService<UserManager<ApplicationUser>>();
@@ -53,27 +52,12 @@ public static class SeedData
             await context.SaveChangesAsync();
         }
 
-        var categories = await context.Categories.ToDictionaryAsync(c => c.Name, c => c.Id);
-        var seedProducts = BuildProducts(categories).ToList();
-        var existingProducts = await context.Products.ToDictionaryAsync(p => p.Name);
-
-        foreach (var seedProduct in seedProducts)
+        if (!await context.Products.AnyAsync())
         {
-            if (existingProducts.TryGetValue(seedProduct.Name, out var existingProduct))
-            {
-                existingProduct.Description = seedProduct.Description;
-                existingProduct.Price = seedProduct.Price;
-                existingProduct.StockQuantity = seedProduct.StockQuantity;
-                existingProduct.CategoryId = seedProduct.CategoryId;
-                existingProduct.ImageUrl = seedProduct.ImageUrl;
-            }
-            else
-            {
-                context.Products.Add(seedProduct);
-            }
+            var categories = await context.Categories.ToDictionaryAsync(c => c.Name, c => c.Id);
+            context.Products.AddRange(BuildProducts(categories));
+            await context.SaveChangesAsync();
         }
-
-        await context.SaveChangesAsync();
     }
 
     private static IEnumerable<Product> BuildProducts(Dictionary<string, int> categories)
