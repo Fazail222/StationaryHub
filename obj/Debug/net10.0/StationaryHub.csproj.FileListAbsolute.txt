@@ -230,3 +230,4 @@ C:\Users\HAMID\Desktop\StationaryHub\obj\Debug\net10.0\compressed\aqet6ipve8-{0}
 C:\Users\HAMID\Desktop\StationaryHub\bin\Debug\net10.0\Npgsql.dll
 C:\Users\HAMID\Desktop\StationaryHub\bin\Debug\net10.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
 C:\Users\HAMID\Desktop\StationaryHub\obj\Debug\net10.0\StationaryHub.sourcelink.json
+C:\Users\HAMID\Desktop\StationaryHub\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt
